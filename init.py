@@ -2,6 +2,7 @@
 # keeps the price information in line with the central server
 
 import urllib.request
+import price
 
 server = "https://cse-linux-01.unl.edu/~dbrozovic2/mtg/data/"
 
@@ -18,3 +19,5 @@ if server_latest != local_latest:
 
     with open("data/latest.txt", "w") as f:
         f.write(server_latest)
+
+price.current = price.load(server_latest)
