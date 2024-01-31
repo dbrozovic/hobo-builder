@@ -4,7 +4,6 @@ import sys
 import price
 import deck
 
-# utils
 def parse(string):
     tokens = []
     current = ""
@@ -25,6 +24,7 @@ def parse(string):
             tokens.append(current)
     return tokens
 
+# TODO: move input validation into dedicated funtions
 def execute(tokens):
     match tokens[0]:
         case "quit":
@@ -40,18 +40,18 @@ def execute(tokens):
                       "You may have mistyped its name, "
                       "or legal copies of the card may be so scarce "
                       "that Scryfall does not list a regular price.")
+        case "add":
+            # TODO: add ability to designate sideboard cards
+            if tokens[2] in price.current.keys():
+                deck.add(deck.main, int(tokens[1]), tokens[2])
+        case "save":
+            deck.save(tokens[1])
 
 def get_price(name):
     if name in price.current:
         print(f"$ {price.current[name]:.2f}")
     else:
         print(f"No card named \"{name}\" was found.")
-
-def add(deck, name, no):
-    if name in deck:
-        deck[name] += no
-    else:
-        deck[name] = no
 
 def remove(deck, name, no):
     if no == "all":
