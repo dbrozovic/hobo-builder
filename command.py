@@ -43,7 +43,10 @@ def execute(tokens):
         case "add":
             # TODO: add ability to designate sideboard cards
             if tokens[2] in price.current.keys():
-                deck.add(deck.main, int(tokens[1]), tokens[2])
+                deck.add(deck.main, tokens[1], tokens[2])
+        case "remove":
+            if tokens[2] in price.current.keys():
+                deck.remove(deck.main, tokens[1], tokens[2])
         case "save":
             deck.save(tokens[1])
 
@@ -53,6 +56,7 @@ def get_price(name):
     else:
         print(f"No card named \"{name}\" was found.")
 
+# TODO: remove once deck.remove() is implemented
 def remove(deck, name, no):
     if no == "all":
         del deck[name]
