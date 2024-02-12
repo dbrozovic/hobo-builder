@@ -40,6 +40,8 @@ def execute(tokens):
                       "You may have mistyped its name, "
                       "or legal copies of the card may be so scarce "
                       "that Scryfall does not list a regular price.")
+        case "list":
+            deck.list()
         case "add":
             # TODO: add ability to designate sideboard cards
             if tokens[2] in price.current.keys():

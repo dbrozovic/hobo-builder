@@ -23,6 +23,10 @@ no_max = [
         "Slime Against Humanity"
 ]
 
+def list():
+    pass
+    # 4 x Lightning Bolt      (0.24) $0.96
+
 def save(name):
     with open(f"decks/{name}.txt", "w+") as f:
         for c, n in main.items():
