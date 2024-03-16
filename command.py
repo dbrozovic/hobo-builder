@@ -43,14 +43,29 @@ def execute(tokens):
         case "list":
             deck.list()
         case "add":
-            # TODO: add ability to designate sideboard cards
             if tokens[2] in price.current.keys():
                 deck.add(deck.main, tokens[1], tokens[2])
         case "remove":
             if tokens[2] in price.current.keys():
                 deck.remove(deck.main, tokens[1], tokens[2])
+        case "side":
+            if tokens[2] in price.current.keys():
+                deck.add(deck.side, tokens[1], tokens[2])
+        case "move":
+            if tokens[2] in price.current.keys():
+                try:
+                    if tokens[3] in ("main", "side"):
+                        deck.move(tokens[1], tokens[2], direction=tokens[3])
+                except IndexError as e:
+                    deck.move(tokens[1], tokens[2])
         case "save":
             deck.save(tokens[1])
+        case "load":
+            deck.load(tokens[1])
+        case "print-priceless":
+            price.print_priceless()
+        case "drop":
+            drop()
 
 def get_price(name):
     if name in price.current:
@@ -66,3 +81,8 @@ def remove(deck, name, no):
         deck[name] -= no
         if deck[name] <= 0:
             del deck[name]
+
+def drop():
+   raw = input("Would you like to delete all items in this deck? [y/N] ")
+   if raw == "y":
+       deck.drop()

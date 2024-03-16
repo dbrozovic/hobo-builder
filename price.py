@@ -17,4 +17,9 @@ def load(string):
         print(f"Warning: {no_price} cards lack price information.")
     return prices
 
+def print_priceless():
+    for (name, price) in current.items():
+        if price == False:
+            print(name)
+
 current = dict()
