@@ -1,3 +1,98 @@
+import json
+
+class Deck:
+    """
+    Represents a decklist (not necessarily a legal or valid one) and provides
+    some basic methods for interacting with that decklist.
+    """
+
+    def __init__(self):
+        self.main = dict()
+        self.side = dict()
+
+    def clear(self):
+        """
+        Removes all elements from self.main and self.side.
+        """
+        self.main.clear()
+        self.side.clear()
+
+    def add(self, num, name):
+        pass
+
+    def remove(self, num, name):
+        pass
+
+    def number_of(self, name):
+        """
+        Returns the number of times name appears in self.main and self.side.
+        """
+        num = 0
+        if card_name in self.main:
+            num += self.main[name]
+        if card_name in self.side:
+            num += self.side[name]
+        return num
+
+    def __str__(self):
+        s = ""
+        for c, n in self.main.items():
+            s += f"{n} {c}\n"
+        s += "\n"
+        for c, n in self.side.items():
+            s += f"{n} {c}\n"
+        return s
+
+class PriceList:
+    """
+    Represents the legal cards and their prices. When initialized, a date in
+    yyyy-mm-dd format may be specified to load prices from that date if
+    available locally. If no date is specified, the most recent available
+    price data loaded.
+    """
+    def __init__(self, date=None):
+        self._contents = dict()
+        if date is None:
+            with open("data/latest.txt") as f:
+                date = f.read()
+        self._load(date)
+
+    def _load(self, string):
+        """
+        Loads the contents of `data/[string].json` to `self._contents` as a
+        dictionary of name:price pairs. Cards without a recorded price are
+        given a value of -1.
+        """
+        self._no_price = 0
+
+        try:
+            f = open(f"data/{string}.json")
+        except FileNotFoundError:
+            # TODO: write some error handling.
+            pass
+        else:
+            with f:
+                raw = json.load(f)
+
+        for c in raw:
+            try:
+                self._contents[c["name"]] = float(c["usd"])
+            except TypeError:
+                self._no_price += 1
+                self._contents[c["name"]] = -1
+
+    def get(self, name):
+        """
+        Returns the price of `name`. A return value of -1 indicates that there
+        is no recorded price for `name`. A return value of -2 indicates that
+        `name` is not recognized as a format-legal card.
+        """
+        if name not in self._contents:
+            return -2
+        else:
+            return self._contents[name]
+
+# TODO: maybe move to separate file for command utils?
 def ellipsis(string, length):
     """
     Returns a string padded or truncated to the given length.

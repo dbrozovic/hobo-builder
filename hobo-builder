@@ -1,9 +1,8 @@
 #! /usr/bin/env python3
 
 import command
-import deck
+import util
 import urllib.request
-import price
 
 server = "https://cse-linux-01.unl.edu/~dbrozovic2/mtg/data/"
 
@@ -27,13 +26,21 @@ if server_latest != local_latest and server_latest != None:
 
     with open("data/latest.txt", "w") as f:
         f.write(server_latest)
-    price.current = price.load(server_latest)
-else:
-    price.current = price.load(local_latest)
+
+price_list = util.PriceList()
 
 while True:
     raw = input(">>> ")
     tokens = command.parse(raw)
-    command.execute(tokens)
-    # do something to see what command is being called - tokens[0]
-    # if price is neccessary feed it to the command module
+    cmdname = tokens[0]
+    cmdpath = f"commands/{cmdname}.py"
+    try:
+        f = open(cmdpath)
+    except FileNotFoundError:
+        print(f"Error: No command named {cmdname}.")
+    else:
+        with f:
+            code = compile(f.read(), cmdpath, "exec")
+            exec(code, None, {
+                "args": tokens[1:]
+            })
