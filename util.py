@@ -7,30 +7,58 @@ class Deck:
     """
 
     def __init__(self):
-        self.main = dict()
-        self.side = dict()
+        self._main = dict()
+        self._side = dict()
 
     def clear(self):
         """
         Removes all elements from self.main and self.side.
         """
-        self.main.clear()
-        self.side.clear()
+        self._main.clear()
+        self._side.clear()
 
-    def add(self, num, name):
-        pass
+    def add_main(self, num, name):
+        """
+        Adds `num` to `self._main[name]`. Does not attempt to ensure `name` is
+        a valid card name.
+        """
+        self._main[name] += num
 
-    def remove(self, num, name):
-        pass
+    def add_side(self, num, name):
+        """
+        Adds `num` to `self._side[name]`. Does not attempt to ensure `name` is
+        a valid card name.
+        """
+        self._side[name] += num
+
+    def remove_main(self, num, name):
+        """
+        Subtracts `num` from `self._main[name]`. If the resulting number is
+        less than one, `self._main[name]` is deleted.
+        """
+        if name in self._main:
+            self._main[name] -= num
+            if self._main[name] < 1:
+                del self._main[name]
+
+    def remove_side(self, num, name):
+        """
+        Subtracts `num` from `self._side[name]`. If the resulting number is
+        less than one, `self._side[name]` is deleted.
+        """
+        if name in self._side:
+            self._side[name] -= num
+            if self._side[name] < 1:
+                del self._side[name]
 
     def number_of(self, name):
         """
         Returns the number of times name appears in self.main and self.side.
         """
         num = 0
-        if card_name in self.main:
+        if card_name in self._main:
             num += self.main[name]
-        if card_name in self.side:
+        if card_name in self._side:
             num += self.side[name]
         return num
 
