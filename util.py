@@ -51,16 +51,18 @@ class Deck:
             if self._side[name] < 1:
                 del self._side[name]
 
-    def number_of(self, name):
+    def number_of(self, name, in=None):
         """
-        Returns the number of times name appears in `self._main` and
-        `self._side`.
+        Returns the number of times name appears in `self._main` or
+        `self._side`. By default, copies both the main deck and the sideboard
+        are counted. To specify one in particular, call with `in="main"` or
+        `in="side"`.
         """
+        if in is None:
+            return self.number_of(name, "main") + self.number_of(name, "side")
         num = 0
-        if card_name in self._main:
-            num += self.main[name]
-        if card_name in self._side:
-            num += self.side[name]
+        if name in self[f"_{in}"]:
+            num += self[f"_{in}"][name]
         return num
 
     def in_main(self, name):
