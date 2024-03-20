@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-import command
 import util
 import urllib.request
 
