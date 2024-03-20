@@ -120,6 +120,26 @@ class PriceList:
         else:
             return self._contents[name]
 
+def parse_tokens(string):
+    tokens = []
+    current = ""
+    parsing_string = False
+    for i in range(len(string)):
+        if string[i] == '"':
+            if parsing_string:
+                tokens.append(current)
+                current = ""
+            parsing_string = not parsing_string
+            continue # don't record double quotes
+        if string[i] == " " and not parsing_string:
+            tokens.append(current)
+            current = ""
+            continue
+        current += string[i]
+        if i == len(string) - 1:
+            tokens.append(current)
+    return tokens
+
 # TODO: maybe move to separate file for command utils?
 def ellipsis(string, length):
     """

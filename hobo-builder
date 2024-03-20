@@ -32,7 +32,7 @@ deck = util.Deck()
 
 while True:
     raw = input(">>> ")
-    tokens = command.parse(raw)
+    tokens = util.parse_tokens(raw)
     cmdname = tokens[0]
     cmdpath = f"commands/{cmdname}.py"
     try:
