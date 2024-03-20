@@ -28,6 +28,7 @@ if server_latest != local_latest and server_latest != None:
         f.write(server_latest)
 
 price_list = util.PriceList()
+deck = util.Deck()
 
 while True:
     raw = input(">>> ")
