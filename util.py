@@ -53,7 +53,8 @@ class Deck:
 
     def number_of(self, name):
         """
-        Returns the number of times name appears in self.main and self.side.
+        Returns the number of times name appears in `self._main` and
+        `self._side`.
         """
         num = 0
         if card_name in self._main:
@@ -61,6 +62,18 @@ class Deck:
         if card_name in self._side:
             num += self.side[name]
         return num
+
+    def in_main(self, name):
+        """
+        Returns true if `name` is in `self._main`.
+        """
+        return name in self._main
+
+    def in_side(self, name):
+        """
+        Returns true if `name` is in `self._side`.
+        """
+        return name in self._side
 
     def __str__(self):
         s = ""
