@@ -17,19 +17,23 @@ class Deck:
         self._main.clear()
         self._side.clear()
 
-    def add_main(self, num, name):
+    def add(self, num, name, loc="main"):
         """
-        Adds `num` to `self._main[name]`. Does not attempt to ensure `name` is
-        a valid card name.
+        Adds `num` copies of `name` to the deck. Defaults to `self._main`,
+        but addition to the sideboard instead can be specified with
+        `loc="side"`. Does not attempt to ensure `name` is a valid card name.
         """
-        self._main[name] += num
-
-    def add_side(self, num, name):
-        """
-        Adds `num` to `self._side[name]`. Does not attempt to ensure `name` is
-        a valid card name.
-        """
-        self._side[name] += num
+        if loc not in {"main", "side"}:
+            # TODO: throw warning?
+            return
+        if loc == "main":
+            if name not in self._main:
+                self._main[name] = 0
+            self._main[name] += num
+        else:
+            if name not in self._side:
+                self._side[name] = 0
+            self._side[name] += num
 
     def remove_main(self, num, name):
         """
@@ -51,38 +55,42 @@ class Deck:
             if self._side[name] < 1:
                 del self._side[name]
 
-    def number_of(self, name, in=None):
+    def number_of(self, name, loc=None):
         """
         Returns the number of times name appears in `self._main` or
         `self._side`. By default, copies both the main deck and the sideboard
-        are counted. To specify one in particular, call with `in="main"` or
-        `in="side"`.
+        are counted. To specify one in particular, call with `loc="main"` or
+        `loc="side"`.
         """
-        if in is None:
-            return self.number_of(name, "main") + self.number_of(name, "side")
+        if loc is None:
+            return self.number_of(name, loc="main") \
+                 + self.number_of(name, loc="side")
         num = 0
-        if name in self[f"_{in}"]:
-            num += self[f"_{in}"][name]
+        if loc == "main":
+            if name in self._main:
+                num += self._main[name]
+        elif loc == "side":
+            if name in self._side:
+                num += self._side[name]
+        else:
+            # TODO: warn about invalid `loc`
+            return 0
         return num
 
-    def in_main(self, name):
-        """
-        Returns true if `name` is in `self._main`.
-        """
-        return name in self._main
+    def iter_main(self):
+        for name in self._main:
+            yield name
 
-    def in_side(self, name):
-        """
-        Returns true if `name` is in `self._side`.
-        """
-        return name in self._side
+    def iter_side(self):
+        for name in self._side:
+            yield name
 
     def __str__(self):
         s = ""
-        for c, n in self.main.items():
+        for c, n in self._main.items():
             s += f"{n} {c}\n"
         s += "\n"
-        for c, n in self.side.items():
+        for c, n in self._side.items():
             s += f"{n} {c}\n"
         return s
 
@@ -99,6 +107,11 @@ class PriceList:
             with open("data/latest.txt") as f:
                 date = f.read()
         self._load(date)
+
+    # let's see if this works
+    def iter(self):
+        for name in self._contents:
+            yield name
 
     def _load(self, string):
         """
