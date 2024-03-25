@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
-import util
+import hobo_core
+import hobo_coreutils
 import urllib.request
 
 server = "https://cse-linux-01.unl.edu/~dbrozovic2/mtg/data/"
@@ -26,12 +27,12 @@ if server_latest != local_latest and server_latest != None:
     with open("data/latest.txt", "w") as f:
         f.write(server_latest)
 
-price_list = util.PriceList()
-deck = util.Deck()
+price_list = hobo_core.PriceList()
+deck = hobo_core.Deck()
 
 while True:
     raw = input(">>> ")
-    tokens = util.parse_tokens(raw)
+    tokens = hobo_coreutils.parse_tokens(raw)
     cmdname = tokens[0]
     cmdpath = f"commands/{cmdname}.py"
     try:
