@@ -5,6 +5,8 @@ Prints the price of `card_name`, which should be enclosed within double quotes
 if it contains a space. Matches names exactly.
 """
 
+import hobo_core
+
 try:
     name = args[0]
 except IndexError:
@@ -13,8 +15,8 @@ else:
     p = price_list.get(name)
     match p:
         case -2:
-            print(f"No recognized card named {name}.")
+            hobo_core.show_warning(f"No recognized card named {name}.")
         case -1:
-            print(f"No price recorded for {name}.")
+            hobo_core.show_warning(f"No price recorded for {name}.")
         case _:
             print(f"$ {p:.2f}")
