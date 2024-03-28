@@ -1,4 +1,5 @@
 import json
+import logging
 
 class Deck:
     """
@@ -147,3 +148,21 @@ class PriceList:
             return -2
         else:
             return self._contents[name]
+
+class Colors:
+    CLR = "\033[0m"
+    WRN = "\033[33;1m"
+    ERR = "\033[31;1m"
+
+def show_warning(message):
+    logging.basicConfig(format = f"{Colors.WRN}Warning:"
+                                 f"{Colors.CLR} %(message)s")
+    logging.warning(message)
+
+def show_error(message):
+    logging.basicConfig(format = f"{Colors.ERR}Error:"
+                                 f"{Colors.CLR} %(message)s")
+    logging.error(message)
+
+def show_info(message):
+    logging.info(message)

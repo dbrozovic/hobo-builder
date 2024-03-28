@@ -11,8 +11,7 @@ try:
         server_latest = f.read().decode("utf-8")
 except urllib.error.URLError as e:
     server_latest = None
-    print("Warning: Cannot reach price database. Loading latest local prices.")
-
+    hobo_core.show_warning("Cannot reach price database.")
 try:
     with open("data/latest.txt", "r", encoding="utf-8") as f:
         local_latest = f.read()
@@ -38,7 +37,7 @@ while True:
     try:
         f = open(cmdpath)
     except FileNotFoundError:
-        print(f"Error: No command named {cmdname}.")
+        hobo_core.show_error(f"No command named {cmdname}.")
     else:
         with f:
             code = compile(f.read(), cmdpath, "exec")
