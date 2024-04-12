@@ -156,13 +156,16 @@ class Colors:
 
 def show_warning(message):
     logging.basicConfig(format = f"{Colors.WRN}Warning:"
-                                 f"{Colors.CLR} %(message)s")
+                                 f"{Colors.CLR} %(message)s",
+                        force = True)
     logging.warning(message)
 
 def show_error(message):
     logging.basicConfig(format = f"{Colors.ERR}Error:"
-                                 f"{Colors.CLR} %(message)s")
+                                 f"{Colors.CLR} %(message)s",
+                        force = True)
     logging.error(message)
 
 def show_info(message):
+    logging.basicConfig(format = "%(message)s", force = True)
     logging.info(message)
