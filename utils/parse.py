@@ -1,4 +1,8 @@
-def parse_tokens(string):
+"""
+    Contains utilites for parsing user input.
+"""
+
+def tokens(string):
     tokens = []
     current = ""
     parsing_string = False
@@ -18,18 +22,7 @@ def parse_tokens(string):
             tokens.append(current)
     return tokens
 
-def ellipsis(string, length):
-    """
-    Returns a string padded or truncated to the given length.
-    If the string is longer, it is truncated three characters short and padded
-    with "..."
-    """
-    if len(string) <= length:
-        return f"{string:<{length}}"
-    else:
-        return f"{string[:length - 3]}..."
-
-def parse_initial_int(string):
+def initial_int(string):
     """
     If the first sequence of characters are digits, parses and returns those
     characters as an integer. Otherwise returns 0.
