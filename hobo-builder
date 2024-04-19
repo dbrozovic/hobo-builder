@@ -1,8 +1,14 @@
 #! /usr/bin/env python3
 
-import hobo_core
-import hobo_coreutils
+import sys
+import os
+
+import core
 import urllib.request
+
+sys.path.append(os.path.abspath("utils/"))
+
+import parse
 
 server = "https://cse-linux-01.unl.edu/~dbrozovic2/mtg/data/"
 
@@ -11,7 +17,7 @@ try:
         server_latest = f.read().decode("utf-8")
 except urllib.error.URLError as e:
     server_latest = None
-    hobo_core.show_warning("Cannot reach price database.")
+    core.show_warning("Cannot reach price database.")
 try:
     with open("data/latest.txt", "r", encoding="utf-8") as f:
         local_latest = f.read()
@@ -26,18 +32,18 @@ if server_latest != local_latest and server_latest != None:
     with open("data/latest.txt", "w") as f:
         f.write(server_latest)
 
-price_list = hobo_core.PriceList()
-deck = hobo_core.Deck()
+price_list = core.PriceList()
+deck = core.Deck()
 
 while True:
     raw = input(">>> ")
-    tokens = hobo_coreutils.parse_tokens(raw)
+    tokens = parse.tokens(raw)
     cmdname = tokens[0]
     cmdpath = f"commands/{cmdname}.py"
     try:
         f = open(cmdpath)
     except FileNotFoundError:
-        hobo_core.show_error(f"No command named {cmdname}.")
+        core.show_error(f"No command named {cmdname}.")
     else:
         with f:
             code = compile(f.read(), cmdpath, "exec")
